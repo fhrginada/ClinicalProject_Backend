@@ -13,6 +13,6 @@ namespace ClinicalProject_API.Models.Entities
         public int? UserId { get; set; }
         public string Action { get; set; }
         public DateTime Timestamp { get; set; } = DateTime.UtcNow;
-        public string Details { get; set; }
+        public required string Details { get; set; }
     }
 }

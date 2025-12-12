@@ -7,9 +7,8 @@ namespace ClinicalProject_API.Models.Entities
         public int PrescriptionId { get; set; }
         public int? ConsultationID { get; set; }
         public int DoctorId { get; set; }
-        public Doctor Doctor { get; set; }
-
-        public Patient Patient { get; set; }
+        public required Doctor Doctor { get; set; }
+        public required Patient Patient { get; set; }
         public int PatientId { get; set; }
         public DateTime DateIssued { get; set; } = DateTime.UtcNow;
         public string Status { get; set; } = "Active";
