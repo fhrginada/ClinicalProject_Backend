@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace ClinicalProject_API.Data
-
 {
-    public class    ClinicalDbContext : DbContext
+    public class ClinicalDbContext : DbContext
     {
         public ClinicalDbContext(DbContextOptions<ClinicalDbContext> options) : base(options) { }
 
@@ -16,7 +15,6 @@ namespace ClinicalProject_API.Data
         public DbSet<Appointment> Appointments { get; set; }
         public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
         public DbSet<NurseSchedule> NurseSchedules { get; set; }
-        
         public DbSet<MedicalRecord> MedicalRecords { get; set; }
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<PrescriptionDetail> PrescriptionDetails { get; set; }
@@ -24,11 +22,13 @@ namespace ClinicalProject_API.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<SystemSettings> ClinicSettings { get; set; }
+        public DbSet<Consultation> Consultations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
+            // User <-> Doctor/Nurse/Patient relations (assumes User has DoctorProfile/NurseProfile/PatientProfile)
             modelBuilder.Entity<User>()
                 .HasOne(u => u.DoctorProfile)
                 .WithOne(d => d.User)
@@ -109,6 +109,41 @@ namespace ClinicalProject_API.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
+
+            // Appointment configuration
+            modelBuilder.Entity<Appointment>(entity =>
+            {
+                entity.HasKey(e => e.AppointmentId);
+
+                entity.HasOne(a => a.Patient)
+                    .WithMany(p => p.Appointments)
+                    .HasForeignKey(a => a.PatientId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(a => a.Doctor)
+                    .WithMany(d => d.Appointments)
+                    .HasForeignKey(a => a.DoctorId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(a => a.Status).HasDefaultValue(AppointmentStatus.Scheduled);
+            });
+
+            // Consultation configuration
+            modelBuilder.Entity<Consultation>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasOne(c => c.Appointment)
+                    .WithOne(a => a.Consultation)
+                    .HasForeignKey<Consultation>(c => c.AppointmentId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(c => c.ConsultationFee).HasColumnType("decimal(18,2)");
+                entity.Property(c => c.IsPaid).HasDefaultValue(false);
+            });
         }
     }
 }
+
+
+

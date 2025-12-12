@@ -11,10 +11,10 @@ namespace ClinicalProject_API.Models.Entities
         public int ClinicSettingsId { get; set; }
 
         [Required, StringLength(100)]
-        public string Key { get; set; }
+        public required string Key { get; set; }
 
         [StringLength(1024)]
-        public string Value { get; set; }
+        public required string Value { get; set; }
 
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     }

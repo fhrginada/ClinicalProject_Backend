@@ -1,13 +1,12 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Clinical_project.API.Models.ViewModels
-
+namespace ClinicalProject_API.Models.ViewModels
 {
     public class AppointmentRequest
     {
         [Required]
-        public int PatientId { get; set; }
+        public int PatientId { get; set; }  // existing patient ID
 
         [Required]
         public int DoctorId { get; set; }
@@ -15,7 +14,11 @@ namespace Clinical_project.API.Models.ViewModels
         [Required]
         public DateTime AppointmentDate { get; set; }
 
-        public TimeSpan? AppointmentTime { get; set; }
-        public string Reason { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string TimeSlot { get; set; } = string.Empty;
+
+        [MaxLength(1000)]
+        public string? ReasonForVisit { get; set; }
     }
 }

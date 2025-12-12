@@ -11,12 +11,13 @@ namespace ClinicalProject_API.Models.Entities
         public int MedicationId { get; set; }
 
         [Required, StringLength(150)]
-        public string DrugName { get; set; }
+        public string DrugName { get; set; } = string.Empty;
 
         [StringLength(100)]
-        public string Category { get; set; }
+        public string? Category { get; set; }
 
         [StringLength(50)]
-        public string CommonDosage { get; set; }
+        public string? CommonDosage { get; set; }
     }
+
 }
