@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Clinical_project.API.Models.ViewModels
+namespace ClinicalProject_API.Models.ViewModels
 
 {
     public class LoginRequest
