@@ -1,0 +1,24 @@
+.vs/ 
+*.user 
+*.suo 
+*.cache 
+*.log 
+## .NET build folders
+bin/
+obj/
+
+## Visual Studio
+.vs/
+
+## User-specific files
+*.user
+*.suo
+
+## NuGet
+project.nuget.cache
+
+.vs/
+bin/
+obj/
+*.user
+*.suo
