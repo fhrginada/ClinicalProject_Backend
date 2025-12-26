@@ -1,0 +1,419 @@
+2025-12-26 20:51:36.435 +02:00 [INF] Executed DbCommand (24ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+PRAGMA journal_mode = 'wal';
+2025-12-26 20:51:36.615 +02:00 [INF] Executed DbCommand (9ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "__EFMigrationsHistory" (
+    "MigrationId" TEXT NOT NULL CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY,
+    "ProductVersion" TEXT NOT NULL
+);
+2025-12-26 20:51:36.631 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-26 20:51:36.637 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-26 20:51:36.659 +02:00 [INF] Applying migration '20251218095313_InitialCreate'.
+2025-12-26 20:51:36.778 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetRoles" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_AspNetRoles" PRIMARY KEY,
+    "Name" TEXT NULL,
+    "NormalizedName" TEXT NULL,
+    "ConcurrencyStamp" TEXT NULL
+);
+2025-12-26 20:51:36.780 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUsers" (
+    "Id" TEXT NOT NULL CONSTRAINT "PK_AspNetUsers" PRIMARY KEY,
+    "UserName" TEXT NULL,
+    "NormalizedUserName" TEXT NULL,
+    "Email" TEXT NULL,
+    "NormalizedEmail" TEXT NULL,
+    "EmailConfirmed" INTEGER NOT NULL,
+    "PasswordHash" TEXT NULL,
+    "SecurityStamp" TEXT NULL,
+    "ConcurrencyStamp" TEXT NULL,
+    "PhoneNumber" TEXT NULL,
+    "PhoneNumberConfirmed" INTEGER NOT NULL,
+    "TwoFactorEnabled" INTEGER NOT NULL,
+    "LockoutEnd" TEXT NULL,
+    "LockoutEnabled" INTEGER NOT NULL,
+    "AccessFailedCount" INTEGER NOT NULL
+);
+2025-12-26 20:51:36.783 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Notifications" (
+    "NotificationId" INTEGER NOT NULL CONSTRAINT "PK_Notifications" PRIMARY KEY AUTOINCREMENT,
+    "UserId" INTEGER NOT NULL,
+    "Title" TEXT NOT NULL,
+    "Message" TEXT NOT NULL,
+    "Type" TEXT NOT NULL,
+    "IsRead" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "ReadAt" TEXT NULL
+);
+2025-12-26 20:51:36.785 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Users" (
+    "UserId" INTEGER NOT NULL CONSTRAINT "PK_Users" PRIMARY KEY AUTOINCREMENT,
+    "Email" TEXT NOT NULL,
+    "PhoneNumber" TEXT NOT NULL,
+    "FirstName" TEXT NOT NULL,
+    "LastName" TEXT NOT NULL,
+    "Role" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NOT NULL,
+    "IsActive" INTEGER NOT NULL
+);
+2025-12-26 20:51:36.787 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetRoleClaims" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_AspNetRoleClaims" PRIMARY KEY AUTOINCREMENT,
+    "RoleId" TEXT NOT NULL,
+    "ClaimType" TEXT NULL,
+    "ClaimValue" TEXT NULL,
+    CONSTRAINT "FK_AspNetRoleClaims_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.789 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserClaims" (
+    "Id" INTEGER NOT NULL CONSTRAINT "PK_AspNetUserClaims" PRIMARY KEY AUTOINCREMENT,
+    "UserId" TEXT NOT NULL,
+    "ClaimType" TEXT NULL,
+    "ClaimValue" TEXT NULL,
+    CONSTRAINT "FK_AspNetUserClaims_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.791 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserLogins" (
+    "LoginProvider" TEXT NOT NULL,
+    "ProviderKey" TEXT NOT NULL,
+    "ProviderDisplayName" TEXT NULL,
+    "UserId" TEXT NOT NULL,
+    CONSTRAINT "PK_AspNetUserLogins" PRIMARY KEY ("LoginProvider", "ProviderKey"),
+    CONSTRAINT "FK_AspNetUserLogins_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.793 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserRoles" (
+    "UserId" TEXT NOT NULL,
+    "RoleId" TEXT NOT NULL,
+    CONSTRAINT "PK_AspNetUserRoles" PRIMARY KEY ("UserId", "RoleId"),
+    CONSTRAINT "FK_AspNetUserRoles_AspNetRoles_RoleId" FOREIGN KEY ("RoleId") REFERENCES "AspNetRoles" ("Id") ON DELETE CASCADE,
+    CONSTRAINT "FK_AspNetUserRoles_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.795 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "AspNetUserTokens" (
+    "UserId" TEXT NOT NULL,
+    "LoginProvider" TEXT NOT NULL,
+    "Name" TEXT NOT NULL,
+    "Value" TEXT NULL,
+    CONSTRAINT "PK_AspNetUserTokens" PRIMARY KEY ("UserId", "LoginProvider", "Name"),
+    CONSTRAINT "FK_AspNetUserTokens_AspNetUsers_UserId" FOREIGN KEY ("UserId") REFERENCES "AspNetUsers" ("Id") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.797 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Doctors" (
+    "DoctorId" INTEGER NOT NULL CONSTRAINT "PK_Doctors" PRIMARY KEY AUTOINCREMENT,
+    "UserId" INTEGER NOT NULL,
+    "Specialization" TEXT NOT NULL,
+    "LicenseNumber" TEXT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NOT NULL,
+    CONSTRAINT "FK_Doctors_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("UserId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.799 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Patients" (
+    "PatientId" INTEGER NOT NULL CONSTRAINT "PK_Patients" PRIMARY KEY AUTOINCREMENT,
+    "UserId" INTEGER NOT NULL,
+    "Gender" TEXT NOT NULL,
+    "Address" TEXT NOT NULL,
+    "EmergencyContact" TEXT NULL,
+    "DateOfBirth" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NOT NULL,
+    CONSTRAINT "FK_Patients_Users_UserId" FOREIGN KEY ("UserId") REFERENCES "Users" ("UserId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.801 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "DoctorSchedules" (
+    "ScheduleId" INTEGER NOT NULL CONSTRAINT "PK_DoctorSchedules" PRIMARY KEY AUTOINCREMENT,
+    "DoctorId" INTEGER NOT NULL,
+    "DayOfWeek" TEXT NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndTime" TEXT NOT NULL,
+    "SlotDurationMinutes" INTEGER NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NOT NULL,
+    CONSTRAINT "FK_DoctorSchedules_Doctors_DoctorId" FOREIGN KEY ("DoctorId") REFERENCES "Doctors" ("DoctorId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.803 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "TimeSlots" (
+    "TimeSlotId" INTEGER NOT NULL CONSTRAINT "PK_TimeSlots" PRIMARY KEY AUTOINCREMENT,
+    "ScheduleId" INTEGER NOT NULL,
+    "SlotDate" TEXT NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndTime" TEXT NOT NULL,
+    "Status" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    CONSTRAINT "FK_TimeSlots_DoctorSchedules_ScheduleId" FOREIGN KEY ("ScheduleId") REFERENCES "DoctorSchedules" ("ScheduleId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.806 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Appointments" (
+    "AppointmentId" INTEGER NOT NULL CONSTRAINT "PK_Appointments" PRIMARY KEY AUTOINCREMENT,
+    "DoctorId" INTEGER NOT NULL,
+    "PatientId" INTEGER NOT NULL,
+    "TimeSlotId" INTEGER NOT NULL,
+    "Status" TEXT NOT NULL,
+    "ReasonForVisit" TEXT NULL,
+    "BookedAt" TEXT NOT NULL,
+    "CanceledAt" TEXT NULL,
+    "CancellationReason" TEXT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    CONSTRAINT "FK_Appointments_Doctors_DoctorId" FOREIGN KEY ("DoctorId") REFERENCES "Doctors" ("DoctorId") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Appointments_Patients_PatientId" FOREIGN KEY ("PatientId") REFERENCES "Patients" ("PatientId") ON DELETE RESTRICT,
+    CONSTRAINT "FK_Appointments_TimeSlots_TimeSlotId" FOREIGN KEY ("TimeSlotId") REFERENCES "TimeSlots" ("TimeSlotId") ON DELETE RESTRICT
+);
+2025-12-26 20:51:36.808 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Consultations" (
+    "ConsultationId" INTEGER NOT NULL CONSTRAINT "PK_Consultations" PRIMARY KEY AUTOINCREMENT,
+    "AppointmentId" INTEGER NOT NULL,
+    "ConsultationDate" TEXT NOT NULL,
+    "StartTime" TEXT NOT NULL,
+    "EndTime" TEXT NULL,
+    "Status" TEXT NOT NULL,
+    "Symptoms" TEXT NULL,
+    "Diagnosis" TEXT NULL,
+    "Notes" TEXT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "UpdatedAt" TEXT NULL,
+    "DoctorModelDoctorId" INTEGER NULL,
+    CONSTRAINT "FK_Consultations_Appointments_AppointmentId" FOREIGN KEY ("AppointmentId") REFERENCES "Appointments" ("AppointmentId") ON DELETE CASCADE,
+    CONSTRAINT "FK_Consultations_Doctors_DoctorModelDoctorId" FOREIGN KEY ("DoctorModelDoctorId") REFERENCES "Doctors" ("DoctorId")
+);
+2025-12-26 20:51:36.810 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "MedicalImages" (
+    "ImageId" INTEGER NOT NULL CONSTRAINT "PK_MedicalImages" PRIMARY KEY AUTOINCREMENT,
+    "PatientId" INTEGER NOT NULL,
+    "ConsultationId" INTEGER NULL,
+    "ImageType" TEXT NOT NULL,
+    "FileName" TEXT NOT NULL,
+    "FilePath" TEXT NOT NULL,
+    "FileSizeBytes" INTEGER NOT NULL,
+    "DateUploaded" TEXT NOT NULL,
+    "Description" TEXT NULL,
+    CONSTRAINT "FK_MedicalImages_Consultations_ConsultationId" FOREIGN KEY ("ConsultationId") REFERENCES "Consultations" ("ConsultationId") ON DELETE SET NULL,
+    CONSTRAINT "FK_MedicalImages_Patients_PatientId" FOREIGN KEY ("PatientId") REFERENCES "Patients" ("PatientId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.813 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "MedicalRecords" (
+    "RecordId" INTEGER NOT NULL CONSTRAINT "PK_MedicalRecords" PRIMARY KEY AUTOINCREMENT,
+    "PatientId" INTEGER NOT NULL,
+    "ConsultationId" INTEGER NULL,
+    "Allergies" TEXT NULL,
+    "ChronicConditions" TEXT NULL,
+    "CurrentMedications" TEXT NULL,
+    "SurgicalHistory" TEXT NULL,
+    "FamilyHistory" TEXT NULL,
+    "LastUpdated" TEXT NOT NULL,
+    CONSTRAINT "FK_MedicalRecords_Consultations_ConsultationId" FOREIGN KEY ("ConsultationId") REFERENCES "Consultations" ("ConsultationId") ON DELETE SET NULL,
+    CONSTRAINT "FK_MedicalRecords_Patients_PatientId" FOREIGN KEY ("PatientId") REFERENCES "Patients" ("PatientId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.815 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE "Prescriptions" (
+    "PrescriptionId" INTEGER NOT NULL CONSTRAINT "PK_Prescriptions" PRIMARY KEY AUTOINCREMENT,
+    "ConsultationId" INTEGER NOT NULL,
+    "MedicationName" TEXT NOT NULL,
+    "Dosage" TEXT NOT NULL,
+    "Frequency" TEXT NOT NULL,
+    "DurationDays" INTEGER NOT NULL,
+    "Instructions" TEXT NULL,
+    "Warnings" TEXT NULL,
+    "Status" TEXT NOT NULL,
+    "CreatedAt" TEXT NOT NULL,
+    "PdfGeneratedAt" TEXT NULL,
+    CONSTRAINT "FK_Prescriptions_Consultations_ConsultationId" FOREIGN KEY ("ConsultationId") REFERENCES "Consultations" ("ConsultationId") ON DELETE CASCADE
+);
+2025-12-26 20:51:36.817 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Appointments_DoctorId_PatientId" ON "Appointments" ("DoctorId", "PatientId");
+2025-12-26 20:51:36.820 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Appointments_PatientId" ON "Appointments" ("PatientId");
+2025-12-26 20:51:36.822 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Appointments_TimeSlotId" ON "Appointments" ("TimeSlotId");
+2025-12-26 20:51:36.824 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetRoleClaims_RoleId" ON "AspNetRoleClaims" ("RoleId");
+2025-12-26 20:51:36.826 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "RoleNameIndex" ON "AspNetRoles" ("NormalizedName");
+2025-12-26 20:51:36.828 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserClaims_UserId" ON "AspNetUserClaims" ("UserId");
+2025-12-26 20:51:36.829 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserLogins_UserId" ON "AspNetUserLogins" ("UserId");
+2025-12-26 20:51:36.831 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_AspNetUserRoles_RoleId" ON "AspNetUserRoles" ("RoleId");
+2025-12-26 20:51:36.833 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "EmailIndex" ON "AspNetUsers" ("NormalizedEmail");
+2025-12-26 20:51:36.836 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "UserNameIndex" ON "AspNetUsers" ("NormalizedUserName");
+2025-12-26 20:51:36.838 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Consultations_AppointmentId" ON "Consultations" ("AppointmentId");
+2025-12-26 20:51:36.840 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Consultations_DoctorModelDoctorId" ON "Consultations" ("DoctorModelDoctorId");
+2025-12-26 20:51:36.842 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Doctors_UserId" ON "Doctors" ("UserId");
+2025-12-26 20:51:36.844 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_DoctorSchedules_DoctorId_DayOfWeek" ON "DoctorSchedules" ("DoctorId", "DayOfWeek");
+2025-12-26 20:51:36.846 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_MedicalImages_ConsultationId" ON "MedicalImages" ("ConsultationId");
+2025-12-26 20:51:36.848 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_MedicalImages_PatientId" ON "MedicalImages" ("PatientId");
+2025-12-26 20:51:36.850 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_MedicalRecords_ConsultationId" ON "MedicalRecords" ("ConsultationId");
+2025-12-26 20:51:36.852 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_MedicalRecords_PatientId" ON "MedicalRecords" ("PatientId");
+2025-12-26 20:51:36.855 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Patients_UserId" ON "Patients" ("UserId");
+2025-12-26 20:51:36.857 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_Prescriptions_ConsultationId" ON "Prescriptions" ("ConsultationId");
+2025-12-26 20:51:36.858 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE INDEX "IX_TimeSlots_ScheduleId_SlotDate" ON "TimeSlots" ("ScheduleId", "SlotDate");
+2025-12-26 20:51:36.860 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE UNIQUE INDEX "IX_Users_Email" ON "Users" ("Email");
+2025-12-26 20:51:36.862 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20251218095313_InitialCreate', '8.0.0');
+2025-12-26 20:51:36.875 +02:00 [INF] Database migration completed successfully
+2025-12-26 20:51:36.893 +02:00 [INF] Executed DbCommand (4ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS Nurses (NurseId INTEGER PRIMARY KEY AUTOINCREMENT, UserId INTEGER NOT NULL, DoctorId INTEGER NULL, LicenseNumber TEXT NULL, Department TEXT NULL, CreatedAt TEXT NOT NULL, UpdatedAt TEXT NOT NULL, FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE CASCADE, FOREIGN KEY (DoctorId) REFERENCES Doctors (DoctorId) ON DELETE SET NULL, UNIQUE (UserId))
+2025-12-26 20:51:36.899 +02:00 [INF] Nurses table verification completed
+2025-12-26 20:51:37.254 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[@__normalizedName_0='?' (Size = 6)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.264 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 6)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.440 +02:00 [INF] Executed DbCommand (16ms) [Parameters=[@p0='?' (Size = 36), @p1='?', @p2='?' (Size = 6), @p3='?' (Size = 6)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES (@p0, @p1, @p2, @p3);
+2025-12-26 20:51:37.448 +02:00 [INF] Created role: Doctor
+2025-12-26 20:51:37.451 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.454 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.467 +02:00 [INF] Executed DbCommand (8ms) [Parameters=[@p0='?' (Size = 36), @p1='?', @p2='?' (Size = 7), @p3='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES (@p0, @p1, @p2, @p3);
+2025-12-26 20:51:37.470 +02:00 [INF] Created role: Patient
+2025-12-26 20:51:37.472 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.474 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:51:37.479 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[@p0='?' (Size = 36), @p1='?', @p2='?' (Size = 5), @p3='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "AspNetRoles" ("Id", "ConcurrencyStamp", "Name", "NormalizedName")
+VALUES (@p0, @p1, @p2, @p3);
+2025-12-26 20:51:37.481 +02:00 [INF] Created role: Nurse
+2025-12-26 20:51:37.485 +02:00 [INF] Starting Clinic Information System API
+2025-12-26 20:51:37.505 +02:00 [INF] User profile is available. Using 'C:\Users\OP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-26 20:51:37.616 +02:00 [WRN] The WebRootPath was not found: C:\Users\OP\source\repos\Software_Project\backend\wwwroot. Static files may be unavailable.
+2025-12-26 20:51:37.664 +02:00 [INF] Now listening on: http://localhost:5056
+2025-12-26 20:51:37.670 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-26 20:51:37.672 +02:00 [INF] Hosting environment: Development
+2025-12-26 20:51:37.673 +02:00 [INF] Content root path: C:\Users\OP\source\repos\Software_Project\backend
+2025-12-26 20:52:28.530 +02:00 [INF] Application is shutting down...
+2025-12-26 20:53:26.865 +02:00 [INF] Executed DbCommand (14ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-26 20:53:26.942 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-26 20:53:26.959 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-26 20:53:26.982 +02:00 [INF] No migrations were applied. The database is already up to date.
+2025-12-26 20:53:26.984 +02:00 [INF] Database migration completed successfully
+2025-12-26 20:53:27.001 +02:00 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS Nurses (NurseId INTEGER PRIMARY KEY AUTOINCREMENT, UserId INTEGER NOT NULL, DoctorId INTEGER NULL, LicenseNumber TEXT NULL, Department TEXT NULL, CreatedAt TEXT NOT NULL, UpdatedAt TEXT NOT NULL, FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE CASCADE, FOREIGN KEY (DoctorId) REFERENCES Doctors (DoctorId) ON DELETE SET NULL, UNIQUE (UserId))
+2025-12-26 20:53:27.010 +02:00 [INF] Nurses table verification completed
+2025-12-26 20:53:27.392 +02:00 [INF] Executed DbCommand (7ms) [Parameters=[@__normalizedName_0='?' (Size = 6)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:53:27.461 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:53:27.465 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 20:53:27.469 +02:00 [INF] Starting Clinic Information System API
+2025-12-26 20:53:27.496 +02:00 [INF] User profile is available. Using 'C:\Users\OP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-26 20:53:27.576 +02:00 [WRN] The WebRootPath was not found: C:\Users\OP\source\repos\Software_Project\backend\wwwroot. Static files may be unavailable.
+2025-12-26 20:53:27.624 +02:00 [INF] Now listening on: http://localhost:5056
+2025-12-26 20:53:27.628 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-26 20:53:27.630 +02:00 [INF] Hosting environment: Development
+2025-12-26 20:53:27.630 +02:00 [INF] Content root path: C:\Users\OP\source\repos\Software_Project\backend
+2025-12-26 20:54:17.568 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5056/swagger/index.html - null null
+2025-12-26 20:54:17.878 +02:00 [INF] HTTP GET /swagger/index.html responded 200 in 259.2088 ms
+2025-12-26 20:54:17.900 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5056/swagger/index.html - 200 null text/html;charset=utf-8 335.1759ms
+2025-12-26 20:54:18.033 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5056/swagger/v1/swagger.json - null null
+2025-12-26 20:54:18.298 +02:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 261.9246 ms
+2025-12-26 20:54:18.300 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5056/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 267.2ms
+2025-12-26 20:54:32.853 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5056/api/Auth/profile - null null
+2025-12-26 20:54:32.863 +02:00 [WRN] Failed to determine the https port for redirect.
+2025-12-26 20:54:32.933 +02:00 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-12-26 20:54:32.942 +02:00 [WRN] JWT Challenge triggered: null
+2025-12-26 20:54:32.946 +02:00 [INF] AuthenticationScheme: Bearer was challenged.
+2025-12-26 20:54:32.947 +02:00 [INF] HTTP GET /api/Auth/profile responded 401 in 86.5130 ms
+2025-12-26 20:54:32.948 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5056/api/Auth/profile - 401 0 null 95.7447ms
+2025-12-26 20:56:20.789 +02:00 [INF] Application is shutting down...
+2025-12-26 21:09:11.378 +02:00 [INF] Executed DbCommand (15ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-26 21:09:11.459 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT COUNT(*) FROM "sqlite_master" WHERE "name" = '__EFMigrationsHistory' AND "type" = 'table';
+2025-12-26 21:09:11.474 +02:00 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-12-26 21:09:11.500 +02:00 [INF] No migrations were applied. The database is already up to date.
+2025-12-26 21:09:11.502 +02:00 [INF] Database migration completed successfully
+2025-12-26 21:09:11.520 +02:00 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS Nurses (NurseId INTEGER PRIMARY KEY AUTOINCREMENT, UserId INTEGER NOT NULL, DoctorId INTEGER NULL, LicenseNumber TEXT NULL, Department TEXT NULL, CreatedAt TEXT NOT NULL, UpdatedAt TEXT NOT NULL, FOREIGN KEY (UserId) REFERENCES Users (UserId) ON DELETE CASCADE, FOREIGN KEY (DoctorId) REFERENCES Doctors (DoctorId) ON DELETE SET NULL, UNIQUE (UserId))
+2025-12-26 21:09:11.528 +02:00 [INF] Nurses table verification completed
+2025-12-26 21:09:11.885 +02:00 [INF] Executed DbCommand (6ms) [Parameters=[@__normalizedName_0='?' (Size = 6)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 21:09:11.950 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 7)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 21:09:11.953 +02:00 [INF] Executed DbCommand (0ms) [Parameters=[@__normalizedName_0='?' (Size = 5)], CommandType='"Text"', CommandTimeout='30']
+SELECT "a"."Id", "a"."ConcurrencyStamp", "a"."Name", "a"."NormalizedName"
+FROM "AspNetRoles" AS "a"
+WHERE "a"."NormalizedName" = @__normalizedName_0
+LIMIT 1
+2025-12-26 21:09:11.957 +02:00 [INF] Starting Clinic Information System API
+2025-12-26 21:09:11.984 +02:00 [INF] User profile is available. Using 'C:\Users\OP\AppData\Local\ASP.NET\DataProtection-Keys' as key repository and Windows DPAPI to encrypt keys at rest.
+2025-12-26 21:09:12.074 +02:00 [WRN] The WebRootPath was not found: C:\Users\OP\source\repos\Software_Project\backend\wwwroot. Static files may be unavailable.
+2025-12-26 21:09:12.121 +02:00 [INF] Now listening on: http://localhost:5056
+2025-12-26 21:09:12.128 +02:00 [INF] Application started. Press Ctrl+C to shut down.
+2025-12-26 21:09:12.130 +02:00 [INF] Hosting environment: Development
+2025-12-26 21:09:12.131 +02:00 [INF] Content root path: C:\Users\OP\source\repos\Software_Project\backend
+2025-12-26 21:09:20.032 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5056/swagger/index.html - null null
+2025-12-26 21:09:20.252 +02:00 [INF] HTTP GET /swagger/index.html responded 200 in 168.5902 ms
+2025-12-26 21:09:20.274 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5056/swagger/index.html - 200 null text/html;charset=utf-8 249.1095ms
+2025-12-26 21:09:20.414 +02:00 [INF] Request starting HTTP/1.1 GET http://localhost:5056/swagger/v1/swagger.json - null null
+2025-12-26 21:09:20.679 +02:00 [INF] HTTP GET /swagger/v1/swagger.json responded 200 in 241.8371 ms
+2025-12-26 21:09:20.681 +02:00 [INF] Request finished HTTP/1.1 GET http://localhost:5056/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 266.9988ms

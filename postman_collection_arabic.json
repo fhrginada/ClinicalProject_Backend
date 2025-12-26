@@ -1,0 +1,177 @@
+{
+  "info": {
+    "_postman_id": "clinic-system-arabic",
+    "name": "‰Ÿ«„ «·⁄Ì«œ… - «Œ »«—«  API »«·⁄—»Ì…",
+    "description": "„Ã„Ê⁄… Postman ﬂ«„·… »»Ì«‰«  ⁄—»Ì… Ê√—ﬁ«„ „’—Ì…",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "«·„’«œﬁ… Ê«· ”ÃÌ·",
+      "item": [
+        {
+          "name": "Register Patient - Mohamed Ali",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "  var json = pm.response.json();",
+                  "  pm.environment.set('patient_token', json.token);",
+                  "  pm.environment.set('patient_user_id', json.user.userId);",
+                  "  console.log(' „ Õ›Ÿ  Êﬂ‰ «·„—Ì÷');",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mohamed.ali@example.com\",\n  \"password\": \"Mohamed@1234\",\n  \"firstName\": \"Mohamed\",\n  \"lastName\": \"Ali\",\n  \"phoneNumber\": \"01012345678\",\n  \"role\": \"Patient\",\n  \"gender\": \"Male\",\n  \"dateOfBirth\": \"1990-05-15\"\n}"
+            },
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] }
+          }
+        },
+        {
+          "name": "Register Patient - Fatima Hassan",
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('patient2_token', json.token); pm.environment.set('patient2_user_id', json.user.userId); }"] , "type": "text/javascript" }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"fatima.hassan@example.com\",\n  \"password\": \"Fatima@1234\",\n  \"firstName\": \"Fatima\",\n  \"lastName\": \"Hassan\",\n  \"phoneNumber\": \"01156789012\",\n  \"role\": \"Patient\",\n  \"gender\": \"Female\",\n  \"dateOfBirth\": \"1988-07-22\"\n}" },
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] }
+          }
+        },
+        {
+          "name": "Register Doctor - Dr. Mahmoud",
+          "event": [
+            { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('doctor_token', json.token); pm.environment.set('doctor_user_id', json.user.userId); }"] , "type": "text/javascript" } }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"dr.mahmoud@example.com\",\n  \"password\": \"DrMahmoud@123\",\n  \"firstName\": \"Mahmoud\",\n  \"lastName\": \"El Sayed\",\n  \"phoneNumber\": \"01223456789\",\n  \"role\": \"Doctor\"\n}" },
+            "url": { "raw": "{{base_url}}/api/auth/register", "host": ["{{base_url}}"], "path": ["api","auth","register"] }
+          }
+        },
+        {
+          "name": "Login Patient - Mohamed",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('current_token', json.token); pm.environment.set('current_user_id', json.user.userId); pm.environment.set('current_user_role', json.user.role); }"] , "type": "text/javascript" } } ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"mohamed.ali@example.com\",\n  \"password\": \"Mohamed@1234\"\n}" },
+            "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] }
+          }
+        },
+        {
+          "name": "Get User Profile (Auth Test)",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{current_token}}" }], "url": { "raw": "{{base_url}}/api/auth/profile", "host": ["{{base_url}}"], "path": ["api","auth","profile"] } }
+      ]
+    },
+    {
+      "name": "Doctor Scheduling",
+      "item": [
+        {
+          "name": "Switch to Dr. Mahmoud (login)",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('current_token', json.token); pm.environment.set('current_user_id', json.user.userId); pm.environment.set('current_user_role', json.user.role); }"] , "type": "text/javascript" } } ],
+          "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"dr.mahmoud@example.com\",\n  \"password\": \"DrMahmoud@123\"\n}" }, "url": { "raw": "{{base_url}}/api/auth/login", "host": ["{{base_url}}"], "path": ["api","auth","login"] } }
+        },
+        {
+          "name": "Create Schedule - Sunday",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{current_token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"dayOfWeek\": \"«·√Õœ\",\n  \"startTime\": \"09:00\",\n  \"endTime\": \"17:00\",\n  \"slotDurationMinutes\": 30\n}" },
+            "url": { "raw": "{{base_url}}/api/doctors/schedule", "host": ["{{base_url}}"], "path": ["api","doctors","schedule"] }
+          }
+        },
+        {
+          "name": "Get Doctor Schedules",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{current_token}}" }], "url": { "raw": "{{base_url}}/api/doctors/schedule", "host": ["{{base_url}}"], "path": ["api","doctors","schedule"] } }
+        }
+      ]
+    },
+    {
+      "name": "Appointments",
+      "item": [
+        {
+          "name": "Get Available Time Slots",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); if (Array.isArray(json) && json.length>0) { pm.environment.set('time_slot_id', json[0].timeSlotId); } }"], "type": "text/javascript" } } ],
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{current_token}}" }], "url": { "raw": "{{base_url}}/api/appointments/available-slots?doctorId={{doctor_user_id}}&startDate=2025-12-21&endDate=2025-12-28", "host": ["{{base_url}}"], "path": ["api","appointments","available-slots"], "query": [{ "key": "doctorId", "value": "{{doctor_user_id}}" },{ "key": "startDate", "value": "2025-12-21" },{ "key": "endDate", "value": "2025-12-28" }] } }
+        },
+        {
+          "name": "Book Appointment",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('appointment_id', json.appointmentId); }"], "type": "text/javascript" } } ],
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{current_token}}" }, { "key": "Content-Type", "value": "application/json" } ],
+            "body": { "mode": "raw", "raw": "{\n  \"doctorId\": {{doctor_user_id}},\n  \"timeSlotId\": {{time_slot_id}},\n  \"reasonForVisit\": \"Faskh Dori wa Qiyas Daqt Al Dam (Routine check and blood pressure)\"\n}" },
+            "url": { "raw": "{{base_url}}/api/appointments", "host": ["{{base_url}}"], "path": ["api","appointments"] }
+          }
+        },
+        {
+          "name": "Get Appointment Details",
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{current_token}}" }], "url": { "raw": "{{base_url}}/api/appointments/{{appointment_id}}", "host": ["{{base_url}}"], "path": ["api","appointments","{{appointment_id}}"] } }
+        }
+      ]
+    },
+    {
+      "name": "Consultations & Prescriptions",
+      "item": [
+        {
+          "name": "Create Consultation (Doctor)",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('consultation_id', json.consultationId); }"], "type": "text/javascript" } } ],
+          "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{doctor_token}}" },{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"appointmentId\": {{appointment_id}},\n  \"symptoms\": \"Alam fi Al Sadr wa Dhiq Nafs (Chest pain and shortness of breath)\",\n  \"diagnosis\": \"Irtifa Daqt Al Dam (Hypertension)\",\n  \"notes\": \"Motaba'a Shahria (Monthly follow-up)\"\n}" }, "url": { "raw": "{{base_url}}/api/consultations", "host": ["{{base_url}}"], "path": ["api","consultations"] } }
+        },
+        {
+          "name": "Create Prescription",
+          "event": [ { "listen": "test", "script": { "exec": ["if (pm.response.code === 200) { var json = pm.response.json(); pm.environment.set('prescription_id', json.prescriptionId); }"], "type": "text/javascript" } } ],
+          "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{doctor_token}}" },{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"prescriptions\": [\n    {\n      \"consultationId\": {{consultation_id}},\n      \"medicationName\": \"Concor\",\n      \"dosage\": \"5 mg\",\n      \"frequency\": \"Once daily\",\n      \"durationDays\": 30\n    }\n  ]\n}" }, "url": { "raw": "{{base_url}}/api/prescriptions", "host": ["{{base_url}}"], "path": ["api","prescriptions"] } }
+        }
+      ]
+    },
+    {
+      "name": "Medical Images",
+      "item": [
+        {
+          "name": "Upload Medical Image",
+          "request": {
+            "method": "POST",
+            "header": [ { "key": "Authorization", "value": "Bearer {{patient_token}}" } ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] },
+                { "key": "imageType", "value": "Chest X-Ray", "type": "text" },
+                { "key": "description", "value": "Routine chest x-ray", "type": "text" },
+                { "key": "consultationId", "value": "{{consultation_id}}", "type": "text" }
+              ]
+            },
+            "url": { "raw": "{{base_url}}/api/medicalimages/upload", "host": ["{{base_url}}"], "path": ["api","medicalimages","upload"] }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    { "listen": "prerequest", "script": { "type": "text/javascript", "exec": ["console.log('ÿ·» API ⁄·Ï: ' + pm.request.url.toString());"] } },
+    { "listen": "test", "script": { "type": "text/javascript", "exec": ["console.log('Õ«·… «·«” Ã«»…: ' + pm.response.code);"] } }
+  ],
+  "variable": [ { "key": "base_url", "value": "https://localhost:7157", "type": "string" } ]
+}
