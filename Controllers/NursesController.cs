@@ -73,6 +73,33 @@ namespace CLINICSYSTEM.Controllers
             }
         }
 
+        [HttpPut("profile")]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateNurseProfileRequest request)
+        {
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Request body is required" });
+                }
+
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
+
+                var result = await _nurseService.UpdateProfileAsync(userId, request);
+                if (!result)
+                    return BadRequest(new { message = "Failed to update profile. Please check if the profile exists." });
+
+                _logger.LogInformation("Nurse profile updated successfully for UserId: {UserId}", userId);
+                return Ok(new { message = "Profile updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating nurse profile");
+                return StatusCode(500, new { message = "An error occurred while updating profile" });
+            }
+        }
+
         [HttpGet("doctor/schedules")]
         public async Task<IActionResult> GetMyDoctorSchedules()
         {

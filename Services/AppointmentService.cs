@@ -33,7 +33,7 @@ namespace CLINICSYSTEM.Services
                     Status = ts.Status
                 })
                 .OrderBy(ts => ts.SlotDate)
-                .ThenBy(ts => ts.StartTime.Ticks)
+                .ThenBy(ts => ts.StartTime)
                 .ToListAsync();
         }
 

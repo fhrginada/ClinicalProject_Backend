@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
+using CLINICSYSTEM.Data;
 using CLINICSYSTEM.Data.DTOs;
 using CLINICSYSTEM.Services;
 
@@ -12,10 +14,17 @@ namespace CLINICSYSTEM.Controllers
     public class AppointmentsController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly ClinicDbContext _context;
+        private readonly ILogger<AppointmentsController> _logger;
 
-        public AppointmentsController(IAppointmentService appointmentService)
+        public AppointmentsController(
+            IAppointmentService appointmentService,
+            ClinicDbContext context,
+            ILogger<AppointmentsController> logger)
         {
             _appointmentService = appointmentService;
+            _context = context;
+            _logger = logger;
         }
 
         private int GetUserId()
@@ -41,13 +50,44 @@ namespace CLINICSYSTEM.Controllers
         [HttpPost("book")]
         public async Task<IActionResult> BookAppointment([FromBody] BookAppointmentRequest request)
         {
-            var userId = GetUserId();
-            if (userId == 0) return Unauthorized();
+            try
+            {
+                if (request == null)
+                {
+                    return BadRequest(new { message = "Request body is required" });
+                }
 
-            var appointment = await _appointmentService.BookAppointmentAsync(userId, request);
-            if (appointment == null) return BadRequest("Failed to book appointment");
+                var userId = GetUserId();
+                if (userId == 0) return Unauthorized();
 
-            return Ok(appointment);
+                // Get patient ID from user ID
+                var patient = await _context.Patients.FirstOrDefaultAsync(p => p.UserId == userId);
+                if (patient == null)
+                {
+                    return BadRequest(new { message = "Patient profile not found. Please complete your profile registration." });
+                }
+
+                var appointment = await _appointmentService.BookAppointmentAsync(patient.PatientId, request);
+                if (appointment == null)
+                {
+                    return BadRequest(new { message = "Failed to book appointment. Please try again." });
+                }
+
+                _logger.LogInformation("Appointment booked successfully: AppointmentId={AppointmentId}, PatientId={PatientId}, DoctorId={DoctorId}", 
+                    appointment.AppointmentId, patient.PatientId, request.DoctorId);
+
+                return Ok(appointment);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogWarning("Appointment booking failed: {Message}", ex.Message);
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error booking appointment");
+                return StatusCode(500, new { message = "An error occurred while booking the appointment. Please try again." });
+            }
         }
 
         [Authorize(Roles = "Patient")]

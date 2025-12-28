@@ -7,6 +7,7 @@ namespace CLINICSYSTEM.Services
         Task<int?> GetNurseIdByUserIdAsync(int userId);
         Task<NurseDashboardDTO?> GetDashboardAsync(int userId);
         Task<NurseProfileDTO?> GetProfileAsync(int userId);
+        Task<bool> UpdateProfileAsync(int userId, UpdateNurseProfileRequest request);
         Task<List<DoctorScheduleViewDTO>> GetAllDoctorSchedulesAsync();
         Task<List<DoctorScheduleViewDTO>> GetMyDoctorSchedulesAsync(int userId);
         Task<List<DoctorScheduleViewDTO>> GetDoctorScheduleAsync(int doctorId);

@@ -77,7 +77,7 @@ namespace CLINICSYSTEM.Services
                            a.Status != "Cancelled" &&
                            a.Status != "Completed")
                 .OrderBy(a => a.TimeSlot.SlotDate)
-                .ThenBy(a => a.TimeSlot.StartTime.Ticks)
+                .ThenBy(a => a.TimeSlot.StartTime)
                 .Take(10)
                 .ToListAsync();
 
@@ -174,7 +174,7 @@ namespace CLINICSYSTEM.Services
                     SlotDurationMinutes = ds.SlotDurationMinutes
                 })
                 .OrderBy(ds => ds.DayOfWeek)
-                .ThenBy(ds => ds.StartTime.Ticks)
+                .ThenBy(ds => ds.StartTime)
                 .ToListAsync();
         }
 
@@ -234,7 +234,7 @@ namespace CLINICSYSTEM.Services
                     SlotDurationMinutes = ds.SlotDurationMinutes
                 })
                 .OrderBy(ds => ds.DayOfWeek)
-                .ThenBy(ds => ds.StartTime.Ticks)
+                .ThenBy(ds => ds.StartTime)
                 .ToListAsync();
         }
 
@@ -450,7 +450,7 @@ namespace CLINICSYSTEM.Services
                            a.TimeSlot.SlotDate <= endDate &&
                            a.Status != "Cancelled")
                 .OrderBy(a => a.TimeSlot.SlotDate)
-                .ThenBy(a => a.TimeSlot.StartTime.Ticks)
+                .ThenBy(a => a.TimeSlot.StartTime)
                 .ToListAsync();
 
             return appointments.Select(a => new UpcomingAppointmentDTO
@@ -512,7 +512,7 @@ namespace CLINICSYSTEM.Services
                            a.TimeSlot.SlotDate <= endDate &&
                            a.Status != "Cancelled")
                 .OrderBy(a => a.TimeSlot.SlotDate)
-                .ThenBy(a => a.TimeSlot.StartTime.Ticks)
+                .ThenBy(a => a.TimeSlot.StartTime)
                 .ToListAsync();
 
             return appointments.Select(a => new UpcomingAppointmentDTO
