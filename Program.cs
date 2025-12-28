@@ -1,6 +1,9 @@
 ﻿using ClinicalProject_API.Data;
 using Microsoft.EntityFrameworkCore;
 using ClinicalProject_API.Services;
+using ClinicalProject_API.Services.Interfaces;
+using ClinicalProject_API.Repositories.Interfaces;
+using ClinicalProject_API.Repositories.Implementations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,14 +12,20 @@ builder.Services.AddDbContext<ClinicalDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
 
-// 2️⃣ Add Services
+// 2️⃣ Add Services (existing)
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IConsultationService, ConsultationService>();
 
-// 3️⃣ Add Controllers
+// 2️⃣ Add Services (Prescription System)
+builder.Services.AddScoped<IPrescriptionService, PrescriptionService>();
+
+// 3️⃣ Add Repositories (Prescription System)
+builder.Services.AddScoped<IPrescriptionRepository, PrescriptionRepository>();
+
+// 4️⃣ Add Controllers
 builder.Services.AddControllers();
 
-// 4️⃣ Swagger
+// 5️⃣ Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
