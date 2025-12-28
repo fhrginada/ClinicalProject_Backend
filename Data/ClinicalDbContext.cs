@@ -19,6 +19,7 @@ namespace ClinicalProject_API.Data
         public DbSet<Prescription> Prescriptions { get; set; }
         public DbSet<PrescriptionDetail> PrescriptionDetails { get; set; }
         public DbSet<Medication> Medications { get; set; }
+        public DbSet<DigitalSignatureToken> DigitalSignatureTokens { get; set; } // جديد
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<AuditLog> AuditLogs { get; set; }
         public DbSet<SystemSettings> ClinicSettings { get; set; }
@@ -28,7 +29,7 @@ namespace ClinicalProject_API.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // User <-> Doctor/Nurse/Patient relations (assumes User has DoctorProfile/NurseProfile/PatientProfile)
+            // User <-> Doctor/Nurse/Patient relations
             modelBuilder.Entity<User>()
                 .HasOne(u => u.DoctorProfile)
                 .WithOne(d => d.User)
@@ -98,6 +99,13 @@ namespace ClinicalProject_API.Data
                 .HasForeignKey(d => d.MedicationId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            // DigitalSignatureToken relations
+            modelBuilder.Entity<DigitalSignatureToken>()
+                .HasOne(t => t.Prescription)
+                .WithMany(p => p.Tokens)
+                .HasForeignKey(t => t.PrescriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             // Notifications
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Notifications)
@@ -144,6 +152,3 @@ namespace ClinicalProject_API.Data
         }
     }
 }
-
-
-
